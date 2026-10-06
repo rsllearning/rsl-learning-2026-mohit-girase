@@ -1,0 +1,29 @@
+{
+  "name": "01-organisation-management-system",
+  "version": "1.0.0",
+  "description": "Organization Management System built with TypeScript adhering to OOP principles",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "start:prod": "node dist/index.js",
+    "test": "jest --verbose",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "typescript",
+    "oop",
+    "organization-management-system"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.10",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
