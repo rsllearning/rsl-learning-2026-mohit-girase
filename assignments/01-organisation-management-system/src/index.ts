@@ -113,8 +113,9 @@ function main(): void {
       dateOfBirth: '01/01/1975',
       designation: Designation.CEO
     });
-  } catch (error: any) {
-    console.log(`Correctly Rejected: ${error.message}`);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.log(`Correctly Rejected: ${msg}`);
   }
 
   // Edge case 2: Duplicate ID
@@ -127,8 +128,9 @@ function main(): void {
       designation: Designation.DIRECTOR,
       reportsTo: 'EMP-001'
     });
-  } catch (error: any) {
-    console.log(`Correctly Rejected: ${error.message}`);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.log(`Correctly Rejected: ${msg}`);
   }
 
   // Edge case 3: Invalid Hierarchy (Engineer attempting to report directly to Director)
@@ -141,8 +143,9 @@ function main(): void {
       designation: Designation.ENGINEER,
       reportsTo: 'EMP-002' // Director ID
     });
-  } catch (error: any) {
-    console.log(`Correctly Rejected: ${error.message}`);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.log(`Correctly Rejected: ${msg}`);
   }
 
   // Edge case 4: Invalid Date of Birth format
@@ -155,16 +158,18 @@ function main(): void {
       designation: Designation.ENGINEER,
       reportsTo: 'EMP-005'
     });
-  } catch (error: any) {
-    console.log(`Correctly Rejected: ${error.message}`);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.log(`Correctly Rejected: ${msg}`);
   }
 
   // Edge case 5: Updating non-existent ID
   try {
     console.log('\nAttempting update on non-existent employee ID:');
     org.updateEmployee('EMP-9999', { name: 'Ghost' });
-  } catch (error: any) {
-    console.log(`Correctly Rejected: ${error.message}`);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.log(`Correctly Rejected: ${msg}`);
   }
 
   // ==========================================
@@ -188,8 +193,9 @@ function main(): void {
   try {
     console.log('\nAttempting to delete Lead EMP-005 while they have active reportees:');
     org.deleteEmployee('EMP-005');
-  } catch (error: any) {
-    console.log(`Correctly Rejected: ${error.message}`);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.log(`Correctly Rejected: ${msg}`);
   }
 
   // Add a new replacement lead
