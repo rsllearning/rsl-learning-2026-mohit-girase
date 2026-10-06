@@ -7,7 +7,7 @@ An in-memory Organization Management System implemented in **TypeScript** using 
 ## Deliverables & Submission Information
 
 - **Git Branch:** `assignment/01-typescript-assignment`
-- **Video Demonstration Link:** `[Add your Google Drive Link here]`
+- **Video Demonstration Link:** [Google Drive](https://drive.google.com/file/d/1asTQIBXsJSvYbihjnO4dgvpyew2g77Fw/view?usp=sharing)
 
 ---
 
