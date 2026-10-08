@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Repository Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>GitHub Repository Tracker</h1>
+      <p class="subtitle">Track and automatically monitor public GitHub repositories</p>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section">
+      <form id="search-form">
+        <input 
+          type="text" 
+          id="username-input" 
+          placeholder="Enter GitHub username (e.g. octocat)" 
+          required 
+          autocomplete="off"
+        />
+        <button type="submit" id="search-btn">Track</button>
+      </form>
+    </section>
+
+    <!-- Status & Auto-Refresh Info -->
+    <section id="status-section" class="status-section" style="display: none;">
+      <div id="status-message" class="status-message"></div>
+      <div id="refresh-info" class="refresh-info" style="display: none;">
+        <span>Last refreshed: <strong id="last-updated">-</strong></span>
+        <span>Next refresh in: <strong id="countdown-timer">60</strong>s</span>
+        <button type="button" id="manual-refresh-btn" class="secondary-btn">Refresh Now</button>
+      </div>
+    </section>
+
+    <!-- Owner Profile Section -->
+    <section id="owner-section" class="owner-section" style="display: none;">
+      <!-- Profile details injected dynamically -->
+    </section>
+
+    <!-- Repositories Section -->
+    <section id="repos-section" class="repos-section" style="display: none;">
+      <h2 id="repos-heading">Public Repositories</h2>
+      <div id="repos-container" class="repos-container">
+        <!-- Repositories list injected dynamically -->
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
