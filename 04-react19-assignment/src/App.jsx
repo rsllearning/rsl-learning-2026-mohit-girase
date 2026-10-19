@@ -1,19 +1,20 @@
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useTransition, useOptimistic } from 'react';
 import { preload, preconnect } from 'react-dom';
 import { UserContext } from './context/UserContext';
 import { initialProductsPromise, reloadProductsPromise } from './api/productsApi';
 import { Header } from './components/Header';
 import { RegistrationForm } from './components/RegistrationForm';
 import { ProductList } from './components/ProductList';
+import { ProductDetails } from './components/ProductDetails';
 import { LoadingFallback } from './components/LoadingFallback';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import './App.css';
 
 // React 19 Asset Loading APIs:
-// 1. preconnect() establishes an early connection to the image CDN domain, reducing DNS and TLS handshake latency.
+// 1. preconnect() establishes early connection to external CDN domain
 preconnect("https://images.unsplash.com");
 
-// 2. preload() initiates early downloading of the primary product hero image so it is ready when the product grid renders.
+// 2. preload() initiates early download of key product image
 preload("https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80", {
   as: "image",
 });
@@ -21,6 +22,18 @@ preload("https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80
 export default function App() {
   const [user, setUser] = useState(null);
   const [productsPromise, setProductsPromise] = useState(initialProductsPromise);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  // Real cart state
+  const [cartCount, setCartCount] = useState(0);
+  const [isCartPending, startCartTransition] = useTransition();
+
+  // React 19 Feature: useOptimistic Hook
+  // Updates cart count immediately during transitions across the whole application
+  const [optimisticCartCount, setOptimisticCartCount] = useOptimistic(
+    cartCount,
+    (current, added) => current + added
+  );
 
   const handleRegisterSuccess = (newUser) => {
     setUser(newUser);
@@ -34,18 +47,52 @@ export default function App() {
     setProductsPromise(reloadProductsPromise());
   };
 
+  // Async Cart API with 2.5s delay to allow easy screenshot capture of the optimistic in-flight state
+  const handleAddToCart = async (quantity, shouldFail) => {
+    return new Promise((resolve, reject) => {
+      startCartTransition(async () => {
+        // Step 1: Immediate optimistic update
+        setOptimisticCartCount(quantity);
+
+        // Step 2: 2.5s simulated network request
+        await new Promise((res) => setTimeout(res, 2500));
+
+        if (shouldFail) {
+          // Step 3 (error): Reject - React automatically rolls back optimisticCartCount to real cartCount
+          reject(new Error("Simulated Server Error 500: Inventory sync failed"));
+        } else {
+          // Step 3 (success): Commit real state
+          setCartCount((prev) => prev + quantity);
+          resolve();
+        }
+      });
+    });
+  };
+
   return (
-    // React 19 Context syntax: <UserContext value={...}> instead of <UserContext.Provider value={...}>
+    // React 19 Context syntax: <UserContext value={...}> directly
     <UserContext value={user}>
-      {/* React 19 Document Metadata: natively hoisted to <head> */}
-      <title>Mini E-Commerce Store – Products</title>
+      {/* React 19 Document Metadata: dynamically changes title based on selected product */}
+      <title>
+        {selectedProduct 
+          ? `${selectedProduct.name} – NovaStore` 
+          : "Mini E-Commerce Store – Products"}
+      </title>
       <meta 
         name="description" 
-        content="Browse curated premium products with modern React 19 features including Actions, use() API, and native metadata." 
+        content={
+          selectedProduct 
+            ? `Buy ${selectedProduct.name} online at NovaStore.` 
+            : "Browse curated premium products with modern React 19 features."
+        } 
       />
 
       <div className="app-layout">
-        <Header onResetUser={user ? handleLogout : null} />
+        <Header 
+          onResetUser={user ? handleLogout : null} 
+          cartCount={optimisticCartCount}
+          isCartPending={isCartPending}
+        />
 
         <main className="main-content">
           <div className="layout-grid">
@@ -58,7 +105,7 @@ export default function App() {
                 <div>
                   <h2 className="section-title">Featured Products</h2>
                   <p className="section-desc">
-                    Asynchronously loaded using React 19 <code>use()</code> and <code>&lt;Suspense&gt;</code>.
+                    Click <strong>View Details</strong> to test React 19 <code>useOptimistic()</code>, Ref as a Prop, and Ref Cleanup.
                   </p>
                 </div>
                 <button 
@@ -72,12 +119,25 @@ export default function App() {
 
               <ErrorBoundary onRetry={handleRefreshProducts}>
                 <Suspense fallback={<LoadingFallback />}>
-                  <ProductList productsPromise={productsPromise} />
+                  <ProductList 
+                    productsPromise={productsPromise} 
+                    onSelectProduct={setSelectedProduct} 
+                  />
                 </Suspense>
               </ErrorBoundary>
             </section>
           </div>
         </main>
+
+        {selectedProduct && (
+          <ProductDetails 
+            product={selectedProduct} 
+            cartCount={optimisticCartCount}
+            isCartPending={isCartPending}
+            onAddToCart={handleAddToCart}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
       </div>
     </UserContext>
   );

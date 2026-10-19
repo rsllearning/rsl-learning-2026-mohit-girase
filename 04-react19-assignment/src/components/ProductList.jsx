@@ -1,7 +1,7 @@
 import { use } from 'react';
 import { ProductCard } from './ProductCard';
 
-export function ProductList({ productsPromise }) {
+export function ProductList({ productsPromise, onSelectProduct }) {
   // Utilizing React 19's use() API to consume Promise directly during render
   const products = use(productsPromise);
 
@@ -12,7 +12,11 @@ export function ProductList({ productsPromise }) {
   return (
     <div className="product-grid">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard 
+          key={product.id} 
+          product={product} 
+          onSelect={onSelectProduct} 
+        />
       ))}
     </div>
   );

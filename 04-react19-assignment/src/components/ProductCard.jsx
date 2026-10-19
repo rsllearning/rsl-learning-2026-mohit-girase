@@ -1,4 +1,4 @@
-export function ProductCard({ product }) {
+export function ProductCard({ product, onSelect }) {
   return (
     <article className="product-card">
       <div className="product-image-wrapper">
@@ -15,7 +15,13 @@ export function ProductCard({ product }) {
         <p className="product-description">{product.description}</p>
         <div className="product-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
-          <span className="product-badge">In Stock</span>
+          <button 
+            type="button" 
+            onClick={() => onSelect(product)} 
+            className="btn-view-details"
+          >
+            View Details
+          </button>
         </div>
       </div>
     </article>
