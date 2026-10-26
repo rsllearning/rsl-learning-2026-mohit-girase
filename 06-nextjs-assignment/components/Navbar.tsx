@@ -1,20 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useFavorites } from './FavoritesContext';
+import FavoritesBadge from './FavoritesBadge';
 import { Heart, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { favoritesCount } = useFavorites();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const navLinks = [
     { label: 'Home', href: '/' },
@@ -72,9 +66,7 @@ export default function Navbar() {
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-zinc-800 bg-zinc-900 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100 transition-colors"
             >
               <Heart className="w-3.5 h-3.5 text-zinc-400 fill-zinc-400" />
-              <span suppressHydrationWarning>
-                Favorites{mounted ? ` (${favoritesCount})` : ''}
-              </span>
+              <FavoritesBadge />
             </Link>
 
             {/* Mobile Menu Toggle */}

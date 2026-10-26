@@ -117,8 +117,30 @@ export default function ProjectFilters({
         )}
       </div>
 
-      <div className="text-[11px] text-zinc-500">
-        Showing {filteredCount} of {totalCount} projects
+      <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-500">
+        <div>
+          Showing {filteredCount} of {totalCount} projects
+        </div>
+
+        {/* Minimal video demo triggers */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => updateFilters({ simulateDelay: '1500' })}
+            className="text-[11px] px-2 py-0.5 rounded border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700 transition-colors cursor-pointer"
+            title="Demonstrate App Router loading.tsx skeleton"
+          >
+            Demo: Loading UI
+          </button>
+          <button
+            type="button"
+            onClick={() => updateFilters({ simulateError: 'true' })}
+            className="text-[11px] px-2 py-0.5 rounded border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700 transition-colors cursor-pointer"
+            title="Demonstrate App Router error.tsx error boundary"
+          >
+            Demo: Error Handling
+          </button>
+        </div>
       </div>
     </div>
   );
