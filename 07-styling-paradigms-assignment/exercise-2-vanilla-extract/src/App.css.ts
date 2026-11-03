@@ -6,16 +6,16 @@ export const appContainer = style({
   backgroundColor: vars.color.background,
   color: vars.color.textPrimary,
   padding: '24px 16px',
-  transition: 'background-color 0.2s ease, color 0.2s ease',
+  transition: 'background-color 0.25s ease, color 0.25s ease',
   '@media': {
     'screen and (min-width: 768px)': {
-      padding: '40px 32px',
+      padding: '48px 32px',
     },
   },
 });
 
 export const contentWrapper = style({
-  maxWidth: 1100,
+  maxWidth: 1120,
   margin: '0 auto',
 });
 
@@ -35,6 +35,25 @@ export const showcaseHeader = style({
   },
 });
 
+export const brandBadge = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 8,
+  fontSize: vars.typography.fontSizeXs,
+  fontWeight: 700,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: vars.color.brand,
+  marginBottom: 6,
+});
+
+export const brandDot = style({
+  width: 8,
+  height: 8,
+  borderRadius: 9999,
+  backgroundColor: vars.color.brand,
+});
+
 export const title = style({
   fontSize: vars.typography.fontSizeXl,
   fontWeight: 800,
@@ -50,28 +69,64 @@ export const subtitle = style({
 });
 
 export const section = style({
-  marginBottom: vars.space.xl,
+  marginBottom: '40px',
+});
+
+export const sectionHeader = style({
+  display: 'flex',
+  alignItems: 'baseline',
+  justifyContent: 'space-between',
+  marginBottom: vars.space.md,
 });
 
 export const sectionTitle = style({
   fontSize: vars.typography.fontSizeLg,
   fontWeight: 700,
+  letterSpacing: '-0.02em',
   color: vars.color.textPrimary,
-  marginBottom: vars.space.xs,
+  margin: 0,
 });
 
 export const sectionDescription = style({
   fontSize: vars.typography.fontSizeSm,
   color: vars.color.textMuted,
-  marginBottom: vars.space.md,
+  marginTop: 4,
 });
 
 export const previewBox = style({
   backgroundColor: vars.color.surface,
   border: `1px solid ${vars.color.border}`,
-  borderRadius: 12,
+  borderRadius: 14,
   padding: vars.space.lg,
   boxShadow: vars.shadows.sm,
+  transition: 'background-color 0.25s ease, border-color 0.25s ease',
+});
+
+export const toolbar = style({
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: vars.space.md,
+  paddingBottom: vars.space.md,
+  marginBottom: vars.space.lg,
+  borderBottom: `1px solid ${vars.color.border}`,
+});
+
+export const toolbarGroup = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 12,
+});
+
+export const controlLabel = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 8,
+  fontSize: vars.typography.fontSizeSm,
+  color: vars.color.textSecondary,
+  cursor: 'pointer',
+  userSelect: 'none',
 });
 
 export const buttonRow = style({
@@ -79,10 +134,9 @@ export const buttonRow = style({
   flexWrap: 'wrap',
   gap: vars.space.md,
   alignItems: 'center',
-  marginBottom: vars.space.md,
 });
 
-export const gridLayout = style({
+export const cardGrid = style({
   display: 'grid',
   gridTemplateColumns: '1fr',
   gap: vars.space.lg,
@@ -96,23 +150,62 @@ export const gridLayout = style({
   },
 });
 
-export const tokenTable = style({
-  width: '100%',
-  borderCollapse: 'collapse',
+export const swatchGrid = style({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: vars.space.md,
+  '@media': {
+    'screen and (min-width: 768px)': {
+      gridTemplateColumns: 'repeat(4, 1fr)',
+    },
+  },
+});
+
+export const swatchCard = style({
+  padding: vars.space.md,
+  borderRadius: 10,
+  backgroundColor: vars.color.surfaceElevated,
+  border: `1px solid ${vars.color.border}`,
+});
+
+export const swatchColorPill = style({
+  height: 48,
+  borderRadius: 6,
+  marginBottom: vars.space.sm,
+  border: `1px solid ${vars.color.border}`,
+});
+
+export const swatchName = style({
   fontSize: vars.typography.fontSizeSm,
-});
-
-export const tableCell = style({
-  padding: '8px 12px',
-  borderBottom: `1px solid ${vars.color.border}`,
-  textAlign: 'left',
-});
-
-export const tableHeaderCell = style({
-  padding: '8px 12px',
-  borderBottom: `2px solid ${vars.color.border}`,
-  textAlign: 'left',
   fontWeight: 600,
   color: vars.color.textPrimary,
+  display: 'block',
 });
 
+export const swatchMeta = style({
+  fontSize: vars.typography.fontSizeXs,
+  color: vars.color.textMuted,
+  fontFamily: 'monospace',
+  marginTop: 2,
+  display: 'block',
+});
+
+export const tokenScaleRow = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 12,
+  marginBottom: 8,
+});
+
+export const tokenScaleLabel = style({
+  width: 60,
+  fontSize: vars.typography.fontSizeXs,
+  fontFamily: 'monospace',
+  color: vars.color.textMuted,
+});
+
+export const tokenScaleBar = style({
+  height: 8,
+  borderRadius: 4,
+  backgroundColor: vars.color.brand,
+});

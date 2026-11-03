@@ -2,8 +2,8 @@ import { createTheme } from '@vanilla-extract/css';
 import { vars } from './contract.css';
 
 /**
- * Light Theme Implementation
- * Values mapped to the typed contract
+ * Porcelain Studio Light Theme
+ * Ultra-clean, refined typography, subtle shadows, crisp borders
  */
 export const lightTheme = createTheme(vars, {
   color: {
@@ -13,14 +13,14 @@ export const lightTheme = createTheme(vars, {
     brandLight: '#eef2ff',
     background: '#f8fafc',
     surface: '#ffffff',
-    surfaceElevated: '#ffffff',
-    surfaceMuted: '#f1f5f9',
+    surfaceElevated: '#f1f5f9',
+    surfaceMuted: '#e2e8f0',
     border: '#e2e8f0',
     textPrimary: '#0f172a',
     textSecondary: '#334155',
     textMuted: '#64748b',
     textInverse: '#ffffff',
-    focusRing: 'rgba(79, 70, 229, 0.4)',
+    focusRing: 'rgba(79, 70, 229, 0.25)',
 
     successBg: '#ecfdf5',
     successText: '#065f46',
@@ -43,7 +43,7 @@ export const lightTheme = createTheme(vars, {
   },
   typography: {
     fontFamily:
-      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif',
     fontSizeXs: '12px',
     fontSizeSm: '14px',
     fontSizeMd: '16px',
@@ -51,50 +51,50 @@ export const lightTheme = createTheme(vars, {
     fontSizeXl: '24px',
   },
   radii: {
-    sm: '4px',
-    md: '8px',
+    sm: '6px',
+    md: '10px',
     lg: '16px',
     full: '9999px',
   },
   shadows: {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+    md: '0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+    lg: '0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
   },
 });
 
 /**
- * Dark Theme Implementation
- * Exact same structure guaranteed at compile-time by createThemeContract
+ * Aurora Charcoal Dark Theme
+ * Deep obsidian graphite surfaces with electric indigo-violet accents
  */
 export const darkTheme = createTheme(vars, {
   color: {
     brand: '#6366f1',
     brandHover: '#818cf8',
     brandActive: '#a5b4fc',
-    brandLight: '#1e1b4b',
-    background: '#090d16',
-    surface: '#111827',
-    surfaceElevated: '#1f2937',
-    surfaceMuted: '#1e293b',
-    border: '#374151',
-    textPrimary: '#f9fafb',
-    textSecondary: '#e5e7eb',
-    textMuted: '#9ca3af',
-    textInverse: '#090d16',
-    focusRing: 'rgba(99, 102, 241, 0.5)',
+    brandLight: 'rgba(99, 102, 241, 0.15)',
+    background: '#090b10',
+    surface: '#0f131c',
+    surfaceElevated: '#171c28',
+    surfaceMuted: '#1e2433',
+    border: '#222938',
+    textPrimary: '#f8fafc',
+    textSecondary: '#cbd5e1',
+    textMuted: '#64748b',
+    textInverse: '#ffffff',
+    focusRing: 'rgba(99, 102, 241, 0.45)',
 
-    successBg: '#064e3b',
-    successText: '#6ee7b7',
-    successBorder: '#047857',
+    successBg: 'rgba(16, 185, 129, 0.12)',
+    successText: '#34d399',
+    successBorder: 'rgba(16, 185, 129, 0.25)',
 
-    warningBg: '#78350f',
-    warningText: '#fde68a',
-    warningBorder: '#b45309',
+    warningBg: 'rgba(245, 158, 11, 0.12)',
+    warningText: '#fbbf24',
+    warningBorder: 'rgba(245, 158, 11, 0.25)',
 
-    errorBg: '#7f1d1d',
-    errorText: '#fca5a5',
-    errorBorder: '#b91c1c',
+    errorBg: 'rgba(239, 68, 68, 0.12)',
+    errorText: '#f87171',
+    errorBorder: 'rgba(239, 68, 68, 0.25)',
   },
   space: {
     xs: '4px',
@@ -105,7 +105,7 @@ export const darkTheme = createTheme(vars, {
   },
   typography: {
     fontFamily:
-      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif',
     fontSizeXs: '12px',
     fontSizeSm: '14px',
     fontSizeMd: '16px',
@@ -113,15 +113,14 @@ export const darkTheme = createTheme(vars, {
     fontSizeXl: '24px',
   },
   radii: {
-    sm: '4px',
-    md: '8px',
+    sm: '6px',
+    md: '10px',
     lg: '16px',
     full: '9999px',
   },
   shadows: {
-    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.4)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4)',
+    sm: '0 1px 3px 0 rgba(0, 0, 0, 0.6)',
+    md: '0 4px 20px -2px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(255, 255, 255, 0.06)',
+    lg: '0 10px 30px -3px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.1)',
   },
 });
-

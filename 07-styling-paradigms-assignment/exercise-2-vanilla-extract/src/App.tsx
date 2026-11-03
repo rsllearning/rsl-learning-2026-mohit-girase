@@ -1,43 +1,80 @@
 import { useState } from 'react';
 import './global.css.ts';
 import { lightTheme, darkTheme } from './theme/theme.css';
+import { vars } from './theme/contract.css';
 import { Button } from './components/Button/Button';
-import { Card, CardHeader, CardTitle, CardSubtitle, CardBody, CardFooter } from './components/Card/Card';
+import type { ButtonSize } from './components/Button/Button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardSubtitle,
+  CardBody,
+  CardFooter,
+} from './components/Card/Card';
 import { Badge } from './components/Badge/Badge';
 import {
   appContainer,
   contentWrapper,
   showcaseHeader,
+  brandBadge,
+  brandDot,
   title,
   subtitle,
   section,
+  sectionHeader,
   sectionTitle,
   sectionDescription,
   previewBox,
+  toolbar,
+  toolbarGroup,
+  controlLabel,
   buttonRow,
-  gridLayout,
-  tokenTable,
-  tableCell,
-  tableHeaderCell,
+  cardGrid,
+  swatchGrid,
+  swatchCard,
+  swatchColorPill,
+  swatchName,
+  swatchMeta,
+  tokenScaleRow,
+  tokenScaleLabel,
+  tokenScaleBar,
 } from './App.css.ts';
-import { Sun, Moon, CheckCircle2, AlertTriangle, XCircle, Sparkles, Heart, Share2 } from 'lucide-react';
+import {
+  Sun,
+  Moon,
+  Sparkles,
+  Share2,
+  Trash2,
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  Cpu,
+  Layers,
+  Database,
+  Sliders,
+} from 'lucide-react';
 
 export function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [isDisabledState, setIsDisabledState] = useState(false);
-  const [clickCount, setClickCount] = useState(0);
+  const [activeSize, setActiveSize] = useState<ButtonSize>('md');
 
   const activeThemeClass = isDarkMode ? darkTheme : lightTheme;
 
   return (
     <div className={`${activeThemeClass} ${appContainer}`}>
       <div className={contentWrapper}>
-        {/* Header with Theme Switcher */}
+        {/* Navigation / Header */}
         <header className={showcaseHeader}>
           <div>
-            <h1 className={title}>Component Library</h1>
+            <div className={brandBadge}>
+              <span className={brandDot} />
+              <span>Kinetic UI • Design System</span>
+            </div>
+            <h1 className={title}>Component Studio</h1>
             <p className={subtitle}>
-              Reusable UI system with design token theming
+              Zero-runtime type-safe design tokens and composable UI primitives
             </p>
           </div>
 
@@ -46,151 +83,97 @@ export function App() {
               variant="secondary"
               size="sm"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              title="Toggle Light / Dark Theme"
+              title="Toggle color theme"
             >
               {isDarkMode ? <Sun size={14} /> : <Moon size={14} />}
-              <span>{isDarkMode ? 'Light Theme' : 'Dark Theme'}</span>
+              <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
             </Button>
           </div>
         </header>
 
-        {/* SECTION 1: BUTTON COMPONENT */}
+        {/* 1. BUTTON COMPONENT WORKBENCH */}
         <section className={section}>
-          <h2 className={sectionTitle}>Button Component</h2>
-          <p className={sectionDescription}>
-            Primary, secondary, and danger variants across small, medium, and large sizes with interactive states.
-          </p>
+          <div className={sectionHeader}>
+            <div>
+              <h2 className={sectionTitle}>Button Primitives</h2>
+              <p className={sectionDescription}>
+                Stateful action controls with variant styling, size scaling, and focus indicators
+              </p>
+            </div>
+          </div>
 
           <div className={previewBox}>
-            {/* Control bar */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, cursor: 'pointer', userSelect: 'none' }}>
-                <input
-                  type="checkbox"
-                  checked={isDisabledState}
-                  onChange={(e) => setIsDisabledState(e.target.checked)}
-                />
-                <strong>Disable buttons</strong>
-              </label>
+            {/* Interactive Workbench Toolbar */}
+            <div className={toolbar}>
+              <div className={toolbarGroup}>
+                <Sliders size={14} style={{ color: 'gray' }} />
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Active Size:</span>
+                {(['sm', 'md', 'lg'] as ButtonSize[]).map((size) => (
+                  <Button
+                    key={size}
+                    variant={activeSize === size ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => setActiveSize(size)}
+                  >
+                    {size.toUpperCase()}
+                  </Button>
+                ))}
+              </div>
 
-              <span style={{ fontSize: 13, color: 'gray' }}>
-                Click Counter: <strong>{clickCount}</strong>
-              </span>
-            </div>
-
-            {/* Matrix Row 1: Primary Variant across sizes */}
-            <div style={{ marginBottom: 16 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'gray', display: 'block', marginBottom: 8 }}>
-                Primary Variant (sm, md, lg)
-              </span>
-              <div className={buttonRow}>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  <Sparkles size={14} /> Small Primary
-                </Button>
-
-                <Button
-                  variant="primary"
-                  size="md"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  Medium Primary
-                </Button>
-
-                <Button
-                  variant="primary"
-                  size="lg"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  Large Primary
-                </Button>
+              <div className={toolbarGroup}>
+                <label className={controlLabel}>
+                  <input
+                    type="checkbox"
+                    checked={isDisabledState}
+                    onChange={(e) => setIsDisabledState(e.target.checked)}
+                  />
+                  <span>Disabled State</span>
+                </label>
               </div>
             </div>
 
-            {/* Matrix Row 2: Secondary Variant across sizes */}
-            <div style={{ marginBottom: 16 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'gray', display: 'block', marginBottom: 8 }}>
-                Secondary Variant (sm, md, lg)
-              </span>
-              <div className={buttonRow}>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  Small Secondary
-                </Button>
+            {/* Live Interactive Action Preview */}
+            <div className={buttonRow}>
+              <Button
+                variant="primary"
+                size={activeSize}
+                disabled={isDisabledState}
+              >
+                <Sparkles size={14} />
+                <span>Primary Action</span>
+              </Button>
 
-                <Button
-                  variant="secondary"
-                  size="md"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  Medium Secondary
-                </Button>
+              <Button
+                variant="secondary"
+                size={activeSize}
+                disabled={isDisabledState}
+              >
+                <Share2 size={14} />
+                <span>Secondary Action</span>
+              </Button>
 
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  Large Secondary
-                </Button>
-              </div>
-            </div>
-
-            {/* Matrix Row 3: Danger Variant across sizes */}
-            <div>
-              <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'gray', display: 'block', marginBottom: 8 }}>
-                Danger Variant (sm, md, lg)
-              </span>
-              <div className={buttonRow}>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  <XCircle size={14} /> Small Danger
-                </Button>
-
-                <Button
-                  variant="danger"
-                  size="md"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  Medium Danger
-                </Button>
-
-                <Button
-                  variant="danger"
-                  size="lg"
-                  disabled={isDisabledState}
-                  onClick={() => setClickCount(c => c + 1)}
-                >
-                  Large Danger
-                </Button>
-              </div>
+              <Button
+                variant="danger"
+                size={activeSize}
+                disabled={isDisabledState}
+              >
+                <Trash2 size={14} />
+                <span>Danger Action</span>
+              </Button>
             </div>
           </div>
         </section>
 
-        {/* SECTION 2: BADGE COMPONENT */}
+        {/* 2. BADGE COMPONENT GALLERY */}
         <section className={section}>
-          <h2 className={sectionTitle}>Badge Component</h2>
-          <p className={sectionDescription}>
-            Status indicators for operational health and system notifications.
-          </p>
+          <div className={sectionHeader}>
+            <div>
+              <h2 className={sectionTitle}>Status Badges</h2>
+              <p className={sectionDescription}>
+                Micro-indicators for operational health, telemetry alerts, and system state
+              </p>
+            </div>
+          </div>
 
           <div className={previewBox}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
@@ -201,137 +184,225 @@ export function App() {
 
               <Badge variant="warning">
                 <AlertTriangle size={12} />
-                <span>Degraded Performance</span>
+                <span>Degraded Service</span>
               </Badge>
 
               <Badge variant="error">
                 <XCircle size={12} />
-                <span>Critical Outage</span>
+                <span>Cluster Outage</span>
               </Badge>
 
               <Badge variant="brand">
                 <Sparkles size={12} />
-                <span>Brand Highlight</span>
+                <span>Production Tier</span>
               </Badge>
             </div>
           </div>
         </section>
 
-        {/* SECTION 3: CARD COMPONENT */}
+        {/* 3. CARD COMPONENT DECK */}
         <section className={section}>
-          <h2 className={sectionTitle}>Card Component</h2>
-          <p className={sectionDescription}>
-            Flexible container with header, title, body, and footer slots.
-          </p>
+          <div className={sectionHeader}>
+            <div>
+              <h2 className={sectionTitle}>Card Containers</h2>
+              <p className={sectionDescription}>
+                Composite structured views with header, body, footer, and elevation levels
+              </p>
+            </div>
+          </div>
 
-          <div className={gridLayout}>
-            {/* Card 1: Elevated Variant */}
+          <div className={cardGrid}>
+            {/* Card 1: Elevated */}
             <Card variant="elevated">
               <CardHeader>
                 <div>
-                  <CardTitle>Cloud Infrastructure</CardTitle>
-                  <CardSubtitle>US-East-1 Cluster</CardSubtitle>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                    <Cpu size={14} />
+                    <CardTitle>Edge Compute Node</CardTitle>
+                  </div>
+                  <CardSubtitle>us-east-virginia • Cluster 04</CardSubtitle>
                 </div>
-                <Badge variant="success">Healthy</Badge>
+                <Badge variant="success">Active</Badge>
               </CardHeader>
               <CardBody>
-                Multi-region Kubernetes deployment handling active ingress traffic with 99.99% uptime SLA.
+                Autonomous serverless runtime processing edge routing and request dispatch with 99.99% availability.
               </CardBody>
               <CardFooter>
                 <Button variant="secondary" size="sm">
-                  <Share2 size={13} /> Inspect
+                  Metrics
                 </Button>
                 <Button variant="primary" size="sm">
-                  Manage
+                  Deploy
                 </Button>
               </CardFooter>
             </Card>
 
-            {/* Card 2: Outlined Variant */}
+            {/* Card 2: Outlined */}
             <Card variant="outlined">
               <CardHeader>
                 <div>
-                  <CardTitle>Security Firewall</CardTitle>
-                  <CardSubtitle>Edge Ruleset v2.4</CardSubtitle>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                    <Layers size={14} />
+                    <CardTitle>Traffic Gateway</CardTitle>
+                  </div>
+                  <CardSubtitle>Policy Ruleset v3.1</CardSubtitle>
                 </div>
-                <Badge variant="warning">Review</Badge>
+                <Badge variant="warning">Throttled</Badge>
               </CardHeader>
               <CardBody>
-                Rate limiter triggered 34 suspicious IP queries in the past 10 minutes. WAF policies active.
+                Rate limiter actively mitigating sudden burst spikes across upstream microservice gateways.
+              </CardBody>
+              <CardFooter>
+                <Button variant="secondary" size="sm">
+                  Rules
+                </Button>
+                <Button variant="primary" size="sm">
+                  Adjust
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* Card 3: Flat */}
+            <Card variant="flat">
+              <CardHeader>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                    <Database size={14} />
+                    <CardTitle>PostgreSQL Replica</CardTitle>
+                  </div>
+                  <CardSubtitle>db-node-09 • Frankfurt</CardSubtitle>
+                </div>
+                <Badge variant="error">Sync Lag</Badge>
+              </CardHeader>
+              <CardBody>
+                Write-ahead replication buffer lag exceeds thresholds. Automatic warm failover node initiated.
               </CardBody>
               <CardFooter>
                 <Button variant="secondary" size="sm">
                   Logs
                 </Button>
                 <Button variant="danger" size="sm">
-                  Block IP
-                </Button>
-              </CardFooter>
-            </Card>
-
-            {/* Card 3: Flat Variant */}
-            <Card variant="flat">
-              <CardHeader>
-                <div>
-                  <CardTitle>Database Replication</CardTitle>
-                  <CardSubtitle>PostgreSQL Primary</CardSubtitle>
-                </div>
-                <Badge variant="error">Sync Lag</Badge>
-              </CardHeader>
-              <CardBody>
-                Secondary replica node is experiencing replication latency exceeding the 500ms threshold.
-              </CardBody>
-              <CardFooter>
-                <Button variant="secondary" size="sm">
-                  <Heart size={13} /> Diagnostics
-                </Button>
-                <Button variant="primary" size="sm">
-                  Re-sync
+                  Failover
                 </Button>
               </CardFooter>
             </Card>
           </div>
         </section>
 
-        {/* SECTION 4: DESIGN TOKENS */}
+        {/* 4. DESIGN TOKEN SHOWCASE */}
         <section className={section}>
-          <h2 className={sectionTitle}>Design Tokens</h2>
-          <p className={sectionDescription}>
-            Active token values mapped from the centralized theme contract.
-          </p>
+          <div className={sectionHeader}>
+            <div>
+              <h2 className={sectionTitle}>Design Token Foundation</h2>
+              <p className={sectionDescription}>
+                Contract-enforced color themes, spacing primitives, and geometry tokens
+              </p>
+            </div>
+          </div>
 
           <div className={previewBox}>
-            <table className={tokenTable}>
-              <thead>
-                <tr>
-                  <th className={tableHeaderCell}>Token Category</th>
-                  <th className={tableHeaderCell}>Contract Variable Reference</th>
-                  <th className={tableHeaderCell}>Active Theme Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className={tableCell}><strong>Color (Brand)</strong></td>
-                  <td className={tableCell}><code>vars.color.brand</code></td>
-                  <td className={tableCell}>{isDarkMode ? '#6366f1 (Dark)' : '#4f46e5 (Light)'}</td>
-                </tr>
-                <tr>
-                  <td className={tableCell}><strong>Color (Surface)</strong></td>
-                  <td className={tableCell}><code>vars.color.surface</code></td>
-                  <td className={tableCell}>{isDarkMode ? '#111827 (Dark)' : '#ffffff (Light)'}</td>
-                </tr>
-                <tr>
-                  <td className={tableCell}><strong>Spacing Scale</strong></td>
-                  <td className={tableCell}><code>vars.space.[xs|sm|md|lg|xl]</code></td>
-                  <td className={tableCell}>4px, 8px, 16px, 24px, 32px</td>
-                </tr>
-                <tr>
-                  <td className={tableCell}><strong>Radii Scale</strong></td>
-                  <td className={tableCell}><code>vars.radii.[sm|md|lg|full]</code></td>
-                  <td className={tableCell}>4px, 8px, 16px, 9999px</td>
-                </tr>
-              </tbody>
-            </table>
+            {/* Color swatches */}
+            <div className={swatchGrid} style={{ marginBottom: 24 }}>
+              <div className={swatchCard}>
+                <div
+                  className={swatchColorPill}
+                  style={{ backgroundColor: vars.color.brand }}
+                />
+                <span className={swatchName}>Brand Accent</span>
+                <span className={swatchMeta}>vars.color.brand</span>
+              </div>
+
+              <div className={swatchCard}>
+                <div
+                  className={swatchColorPill}
+                  style={{ backgroundColor: vars.color.surface }}
+                />
+                <span className={swatchName}>Surface Container</span>
+                <span className={swatchMeta}>vars.color.surface</span>
+              </div>
+
+              <div className={swatchCard}>
+                <div
+                  className={swatchColorPill}
+                  style={{ backgroundColor: vars.color.surfaceElevated }}
+                />
+                <span className={swatchName}>Elevated Surface</span>
+                <span className={swatchMeta}>vars.color.surfaceElevated</span>
+              </div>
+
+              <div className={swatchCard}>
+                <div
+                  className={swatchColorPill}
+                  style={{ backgroundColor: vars.color.border }}
+                />
+                <span className={swatchName}>Subtle Border</span>
+                <span className={swatchMeta}>vars.color.border</span>
+              </div>
+            </div>
+
+            {/* Spacing & Radii Scales */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: 24,
+                paddingTop: 16,
+                borderTop: `1px solid ${vars.color.border}`,
+              }}
+            >
+              <div>
+                <span style={{ fontSize: 13, fontWeight: 700, display: 'block', marginBottom: 12 }}>
+                  Spacing Primitive Scale
+                </span>
+                {[
+                  { label: 'xs (4px)', width: '12%' },
+                  { label: 'sm (8px)', width: '25%' },
+                  { label: 'md (16px)', width: '50%' },
+                  { label: 'lg (24px)', width: '75%' },
+                  { label: 'xl (32px)', width: '100%' },
+                ].map((item) => (
+                  <div key={item.label} className={tokenScaleRow}>
+                    <span className={tokenScaleLabel}>{item.label}</span>
+                    <div style={{ flex: 1, backgroundColor: vars.color.surfaceElevated, height: 8, borderRadius: 4 }}>
+                      <div className={tokenScaleBar} style={{ width: item.width }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div>
+                <span style={{ fontSize: 13, fontWeight: 700, display: 'block', marginBottom: 12 }}>
+                  Border Radius Scale
+                </span>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                  {[
+                    { label: 'sm', radius: vars.radii.sm },
+                    { label: 'md', radius: vars.radii.md },
+                    { label: 'lg', radius: vars.radii.lg },
+                    { label: 'full', radius: vars.radii.full },
+                  ].map((r) => (
+                    <div
+                      key={r.label}
+                      style={{
+                        width: 54,
+                        height: 54,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: vars.color.surfaceElevated,
+                        border: `1px solid ${vars.color.border}`,
+                        borderRadius: r.radius,
+                        fontSize: 11,
+                        fontFamily: 'monospace',
+                        color: vars.color.textMuted,
+                      }}
+                    >
+                      {r.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
