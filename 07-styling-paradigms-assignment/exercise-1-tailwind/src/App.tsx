@@ -4,7 +4,7 @@ import type { Product } from './types/product';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { ProductGrid } from './components/ProductGrid';
-import { Palette, Check, X, ShieldAlert } from 'lucide-react';
+import { Palette, Check, X, ShieldAlert, Cpu, CheckCircle2 } from 'lucide-react';
 
 export function App() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -13,13 +13,14 @@ export function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [activeBrandColor, setActiveBrandColor] = useState('#4f46e5');
+  const [activeBrandColor, setActiveBrandColor] = useState('#06b6d4');
 
-  // New product form state
+  // New asset form state
   const [newProductName, setNewProductName] = useState('');
-  const [newProductCategory, setNewProductCategory] = useState('Audio');
-  const [newProductPrice, setNewProductPrice] = useState('149.99');
-  const [newProductStock, setNewProductStock] = useState('15');
+  const [newProductCategory, setNewProductCategory] = useState('Acoustics');
+  const [newProductPrice, setNewProductPrice] = useState('499.00');
+  const [newProductStock, setNewProductStock] = useState('12');
+  const [newProductSpecs, setNewProductSpecs] = useState('Custom BSI Sensor • Precision CNC');
 
   // Categories list
   const categories = useMemo(() => {
@@ -32,7 +33,8 @@ export function App() {
     return products.filter((product) => {
       const matchesSearch =
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchTerm.toLowerCase());
+        product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.sku.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory =
         selectedCategory === 'All' || product.category === selectedCategory;
       return matchesSearch && matchesCategory;
@@ -47,12 +49,12 @@ export function App() {
     setToastMessage(msg);
     setTimeout(() => {
       setToastMessage(null);
-    }, 3000);
+    }, 3200);
   };
 
   const handleAddToCart = (product: Product) => {
     if (product.status === 'out_of_stock') return;
-    showToast(`Added "${product.name}" to cart!`);
+    showToast(`Unit [${product.sku}] added to procurement queue.`);
   };
 
   const handleCreateProduct = (e: React.FormEvent) => {
@@ -60,40 +62,42 @@ export function App() {
     if (!newProductName.trim()) return;
 
     const stock = parseInt(newProductStock, 10) || 0;
-    const price = parseFloat(newProductPrice) || 99.99;
+    const price = parseFloat(newProductPrice) || 299.00;
 
     const newProd: Product = {
       id: `prod-${Date.now()}`,
+      sku: `APX-${Math.floor(100 + Math.random() * 900)}`,
       name: newProductName,
       category: newProductCategory,
       price,
       rating: 5.0,
       status: stock > 5 ? 'in_stock' : stock > 0 ? 'low_stock' : 'out_of_stock',
       stockCount: stock,
-      imageUrl: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80',
-      description: 'Newly registered inventory unit with automated stock allocation.',
+      imageUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=800&q=80',
+      specs: newProductSpecs,
+      description: 'Factory-calibrated hardware asset initialized into local procurement directory.',
     };
 
     setProducts([newProd, ...products]);
     setIsAddModalOpen(false);
     setNewProductName('');
-    showToast(`Successfully created "${newProd.name}"`);
+    showToast(`Registered "${newProd.name}" (${newProd.sku})`);
   };
 
-  // Allows verifying Verification Step 7:
+  // Verification Step 7:
   // "Change one of the configured theme/design-token values and verify that the corresponding UI elements update consistently."
   const applyBrandToken = (color: string) => {
     setActiveBrandColor(color);
     document.documentElement.style.setProperty('--color-brand', color);
-    showToast(`Updated design token --color-brand to ${color}`);
+    showToast(`Design token --color-brand updated to ${color}`);
   };
 
   return (
-    <div className="min-h-screen bg-canvas text-content-body flex flex-col antialiased">
+    <div className="min-h-screen bg-canvas text-content-body flex flex-col antialiased selection:bg-brand selection:text-slate-950">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-action shadow-lg animate-fade-in">
-          <Check className="w-4 h-4 text-emerald-400" />
+        <div className="fixed top-5 right-5 z-50 flex items-center gap-2.5 px-4 py-2.5 bg-surface-elevated/95 backdrop-blur-md border border-border-strong text-content-title text-xs font-mono font-medium rounded-action shadow-2xl animate-fade-in">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -111,49 +115,52 @@ export function App() {
       />
 
       {/* Main Layout: Sidebar + Dashboard Content */}
-      <div className="flex-1 flex max-w-7xl w-full mx-auto pb-20 md:pb-8">
+      <div className="flex-1 flex max-w-7xl w-full mx-auto pb-24 md:pb-10">
         {/* Adaptive Sidebar (Desktop sidebar + Mobile bottom bar) */}
         <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
         {/* Main Content Area */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          {/* Design Token Inspector Banner (Verification Step 7 Demonstration) */}
-          <section className="mb-6 bg-surface border border-border-subtle rounded-card p-4 shadow-xs">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <Palette className="w-5 h-5 text-brand" />
+          {/* Design Token Live Verification Panel (Requirement 7 & Verification Step 7) */}
+          <section className="mb-6 bg-surface/70 backdrop-blur-md border border-border-subtle hover:border-border-strong rounded-card p-4 shadow-sm transition-colors">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-action bg-surface-elevated border border-border-subtle flex items-center justify-center text-brand">
+                  <Palette className="w-4 h-4" />
+                </div>
                 <div>
-                  <h2 className="text-sm font-bold text-content-title">
-                    Design Token Live Testing (Requirement 7 & Verification Step 7)
+                  <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-content-title">
+                    Theme Token Live Telemetry (Req 7 & Step 7)
                   </h2>
-                  <p className="text-xs text-content-muted">
-                    Switch primary brand token to verify UI elements update consistently:
+                  <p className="text-[11px] font-mono text-content-muted">
+                    Active brand token: <code className="text-brand font-bold">{activeBrandColor}</code> • Real-time utility propagation
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* Token palette chips */}
+              <div className="flex items-center gap-2 flex-wrap">
                 {[
-                  { name: 'Indigo (Default)', hex: '#4f46e5' },
-                  { name: 'Emerald', hex: '#059669' },
-                  { name: 'Violet', hex: '#7c3aed' },
-                  { name: 'Rose', hex: '#e11d48' },
-                  { name: 'Amber', hex: '#d97706' },
+                  { name: 'Cyber Cyan', hex: '#06b6d4' },
+                  { name: 'Emerald Pro', hex: '#10b981' },
+                  { name: 'Nordic Gold', hex: '#f59e0b' },
+                  { name: 'Vapor Violet', hex: '#a855f7' },
+                  { name: 'Rose Titanium', hex: '#f43f5e' },
                 ].map((token) => (
                   <button
                     key={token.hex}
                     type="button"
                     onClick={() => applyBrandToken(token.hex)}
-                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-action border border-border-subtle hover:bg-canvas transition-colors cursor-pointer"
-                    title={`Apply ${token.name}`}
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono rounded-action border border-border-subtle bg-surface-elevated/50 hover:bg-surface-elevated transition-colors cursor-pointer"
+                    title={`Switch token to ${token.name}`}
                   >
                     <span
-                      className="w-3 h-3 rounded-full inline-block border border-black/10"
+                      className="w-2.5 h-2.5 rounded-full inline-block shadow-xs"
                       style={{ backgroundColor: token.hex }}
                     />
-                    <span className="hidden sm:inline">{token.name.split(' ')[0]}</span>
+                    <span className="text-[11px] font-medium text-content-title">{token.name.split(' ')[0]}</span>
                     {activeBrandColor === token.hex && (
-                      <Check className="w-3 h-3 text-content-title ml-0.5" />
+                      <Check className="w-3 h-3 text-brand ml-0.5" />
                     )}
                   </button>
                 ))}
@@ -162,17 +169,20 @@ export function App() {
           </section>
 
           {/* Section Heading & Grid Description */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h2 className="text-xl font-extrabold text-content-title tracking-tight">
-                Products Grid
-              </h2>
-              <p className="text-xs text-content-muted mt-0.5">
-                Responsive breakpoint demonstration: 1-col (mobile) $\rightarrow$ 2-col (tablet/md) $\rightarrow$ 3-col (desktop/lg)
+              <div className="flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-brand" />
+                <h2 className="text-sm font-mono font-bold uppercase tracking-widest text-content-title">
+                  HARDWARE MATRIX
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-content-muted mt-0.5">
+                Responsive CSS Grid: 1-col (mobile) $\rightarrow$ 2-col (tablet/md) $\rightarrow$ 3-col (desktop/lg)
               </p>
             </div>
-            <span className="text-xs font-medium text-content-muted">
-              Showing {filteredProducts.length} items
+            <span className="text-xs font-mono px-2.5 py-1 rounded bg-surface-elevated text-content-body border border-border-subtle">
+              Showing {filteredProducts.length} units
             </span>
           </div>
 
@@ -184,57 +194,63 @@ export function App() {
         </main>
       </div>
 
-      {/* Add Product Modal */}
+      {/* Register Asset Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
-          <div className="bg-surface rounded-card border border-border-subtle shadow-xl w-full max-w-md p-6 animate-scale-up">
-            <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
-              <h3 className="text-lg font-bold text-content-title">Add New Product</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-canvas/80 backdrop-blur-md p-4">
+          <div className="bg-surface rounded-card border border-border-strong shadow-2xl w-full max-w-md p-6 animate-scale-up">
+            <div className="flex items-center justify-between pb-3.5 border-b border-border-subtle">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-brand" />
+                <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-content-title">
+                  Register Hardware Asset
+                </h3>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="text-content-muted hover:text-content-title p-1 rounded-action hover:bg-canvas transition-colors cursor-pointer"
+                className="text-content-muted hover:text-content-title p-1 rounded-action hover:bg-surface-elevated transition-colors cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             <form onSubmit={handleCreateProduct} className="mt-4 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-content-title uppercase tracking-wider mb-1">
-                  Product Name
+                <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-content-muted mb-1.5">
+                  Asset Title
                 </label>
                 <input
                   type="text"
                   required
                   value={newProductName}
                   onChange={(e) => setNewProductName(e.target.value)}
-                  placeholder="e.g. Ergonomic Keyboard"
-                  className="w-full px-3 py-2 text-sm bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light"
+                  placeholder="e.g. Reference Planar Master DAC"
+                  className="w-full px-3 py-2 text-xs font-mono bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-content-title uppercase tracking-wider mb-1">
+                  <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-content-muted mb-1.5">
                     Category
                   </label>
                   <select
                     value={newProductCategory}
                     onChange={(e) => setNewProductCategory(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light"
+                    className="w-full px-3 py-2 text-xs font-mono bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                   >
-                    <option value="Audio">Audio</option>
-                    <option value="Peripherals">Peripherals</option>
+                    <option value="Acoustics">Acoustics</option>
                     <option value="Displays">Displays</option>
+                    <option value="Optics">Optics</option>
+                    <option value="Peripherals">Peripherals</option>
                     <option value="Lighting">Lighting</option>
                     <option value="Accessories">Accessories</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-content-title uppercase tracking-wider mb-1">
-                    Price ($)
+                  <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-content-muted mb-1.5">
+                    Unit Price ($ USD)
                   </label>
                   <input
                     type="number"
@@ -242,14 +258,27 @@ export function App() {
                     required
                     value={newProductPrice}
                     onChange={(e) => setNewProductPrice(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light"
+                    className="w-full px-3 py-2 text-xs font-mono bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-content-title uppercase tracking-wider mb-1">
-                  Stock Units (0 = Out of Stock / Disabled)
+                <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-content-muted mb-1.5">
+                  Technical Specifications
+                </label>
+                <input
+                  type="text"
+                  value={newProductSpecs}
+                  onChange={(e) => setNewProductSpecs(e.target.value)}
+                  placeholder="e.g. Dual 40mm Beryllium Drivers"
+                  className="w-full px-3 py-2 text-xs font-mono bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-content-muted mb-1.5">
+                  Stock Allocation (0 = Out of Stock)
                 </label>
                 <input
                   type="number"
@@ -257,11 +286,11 @@ export function App() {
                   required
                   value={newProductStock}
                   onChange={(e) => setNewProductStock(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light"
+                  className="w-full px-3 py-2 text-xs font-mono bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
-                <span className="text-[11px] text-content-muted mt-1 flex items-center gap-1">
-                  <ShieldAlert className="w-3 h-3 text-amber-500" />
-                  Setting 0 tests the disabled action button requirement.
+                <span className="text-[10px] font-mono text-content-muted mt-1.5 flex items-center gap-1.5">
+                  <ShieldAlert className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  0 stock verifies the disabled button state styling.
                 </span>
               </div>
 
@@ -269,15 +298,15 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 text-sm font-semibold rounded-action text-content-muted hover:text-content-title hover:bg-canvas transition-colors cursor-pointer"
+                  className="px-4 py-2 text-xs font-mono font-semibold rounded-action text-content-muted hover:text-content-title hover:bg-surface-elevated transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm font-semibold rounded-action bg-brand text-white hover:bg-brand-hover transition-colors shadow-xs cursor-pointer"
+                  className="px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider rounded-action bg-brand text-slate-950 hover:bg-brand-hover transition-colors shadow-sm cursor-pointer"
                 >
-                  Save Product
+                  Deploy Asset
                 </button>
               </div>
             </form>

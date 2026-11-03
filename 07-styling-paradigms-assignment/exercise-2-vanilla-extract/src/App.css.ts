@@ -115,3 +115,4 @@ export const tableHeaderCell = style({
   fontWeight: 600,
   color: vars.color.textPrimary,
 });
+

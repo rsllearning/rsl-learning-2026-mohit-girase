@@ -10,9 +10,9 @@ interface ProductGridProps {
 export const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
   if (products.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center bg-surface rounded-card border border-border-subtle p-8">
-        <p className="text-content-title font-semibold text-lg">No products found</p>
-        <p className="text-content-muted text-sm mt-1">Try adjusting your filters or category selection.</p>
+      <div className="flex flex-col items-center justify-center py-20 text-center bg-surface/70 rounded-card border border-border-subtle p-8 shadow-inner">
+        <p className="text-content-title font-mono font-bold text-base">NO MATCHING HARDWARE UNITS</p>
+        <p className="text-content-muted font-mono text-xs mt-1">Adjust search filter or select another asset category.</p>
       </div>
     );
   }
@@ -34,3 +34,4 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart 
     </div>
   );
 };
+

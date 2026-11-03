@@ -101,3 +101,4 @@ export const buttonSizes = styleVariants({
 export const fullWidthStyle = style({
   width: '100%',
 });
+

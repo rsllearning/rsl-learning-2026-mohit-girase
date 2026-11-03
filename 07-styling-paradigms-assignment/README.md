@@ -57,30 +57,35 @@ Exercise 1 delivers a responsive product inventory dashboard built with **Tailwi
 
 ### Key Requirements Implemented
 1. **Utility-First Styling**: All layouts, spacing, colors, borders, and typography are composed directly via Tailwind utility classes.
-2. **Responsive Breakpoints without JavaScript**:
+2. **Professional Dark Obsidian Theme**: Engineered with a deep obsidian palette (`#090d16`), dark glassmorphic surfaces (`#0f172a`), crisp structural borders (`#1e293b`), and cyber cyan accents (`#06b6d4`).
+3. **Responsive Breakpoints without JavaScript**:
    * **Small screens (`< 768px`)**: Single column (`grid-cols-1`).
    * **Medium screens (`≥ 768px`)**: Two columns (`md:grid-cols-2`).
    * **Large screens (`≥ 1024px`)**: Three columns (`lg:grid-cols-3`).
    * Handled purely via Tailwind's responsive prefixes without any `useState` or window resize event listeners.
-3. **Adaptive Navigation / Sidebar**:
-   * **Desktop (`md:flex`)**: Vertical sidebar with brand header, navigation buttons, and status indicator.
-   * **Mobile (`md:hidden`)**: Fixed bottom navigation bar with thumb-friendly controls.
-4. **State-Based Styling**:
-   * **Hover**: `hover:bg-brand-hover hover:shadow-md transition-all`
-   * **Focus**: `focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2`
-   * **Disabled**: `disabled:opacity-50 disabled:cursor-not-allowed` (demonstrated on out-of-stock inventory items).
-5. **Configured Design Tokens**:
+4. **Adaptive Navigation / Sidebar**:
+   * **Desktop (`md:flex`)**: Vertical sidebar with brand header, telemetry meters, and system sector buttons.
+   * **Mobile (`md:hidden`)**: Fixed frosted-glass bottom navigation bar with thumb-friendly controls.
+5. **State-Based Styling**:
+   * **Hover**: `hover:bg-brand-hover hover:shadow-lg hover:shadow-brand/25 transition-all`
+   * **Focus**: `focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-canvas`
+   * **Disabled**: `disabled:opacity-40 disabled:cursor-not-allowed` (demonstrated on out-of-stock backorder items).
+6. **Configured Design Tokens**:
    Defined using the modern Tailwind v4 `@theme` directive in `src/index.css`:
-   * `--color-brand`: `#4f46e5`
-   * `--color-canvas`: `#f8fafc`
-   * `--color-surface`: `#ffffff`
-   * `--color-content-title`: `#0f172a`
+   * `--color-brand`: `#06b6d4` (Cyber Cyan)
+   * `--color-brand-hover`: `#0891b2`
+   * `--color-canvas`: `#090d16` (Deep Obsidian)
+   * `--color-surface`: `#0f172a` (Slate 900)
+   * `--color-surface-elevated`: `#162032` (Slate 800)
+   * `--color-border-subtle`: `#1e293b`
+   * `--color-content-title`: `#f8fafc`
+   * `--color-content-body`: `#94a3b8`
    * `--color-content-muted`: `#64748b`
-   * `--spacing-card-p`: `1.25rem`
-   * `--spacing-dash-gap`: `1.5rem`
-   * `--radius-card`: `1rem`
-   * `--radius-action`: `0.5rem`
-6. **Live Design Token Tester**:
+   * `--spacing-card-p`: `1.5rem`
+   * `--spacing-dash-gap`: `1.75rem`
+   * `--radius-card`: `1.125rem`
+   * `--radius-action`: `0.625rem`
+7. **Live Design Token Tester**:
    The dashboard includes an interactive theme token switcher in the header to verify that updating `--color-brand` dynamically updates buttons, active pills, and focus rings consistently across the entire application.
 
 ---
@@ -160,3 +165,4 @@ npm run lint
 # Build for production and inspect static CSS output
 npm run build
 ```
+
