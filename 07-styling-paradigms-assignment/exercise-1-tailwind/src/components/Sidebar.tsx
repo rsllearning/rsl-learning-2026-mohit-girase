@@ -94,8 +94,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
           <div className="flex items-center gap-2.5 px-2 py-1.5">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <div className="text-[11px] font-mono">
-              <p className="text-content-title font-bold leading-none">Tailwind v4 Core</p>
-              <p className="text-content-muted text-[10px] mt-0.5">Zero-Runtime Utilities</p>
+              <p className="text-content-title font-bold leading-none">Console Online</p>
+              <p className="text-content-muted text-[10px] mt-0.5">v2.4.0 Production</p>
             </div>
           </div>
         </div>

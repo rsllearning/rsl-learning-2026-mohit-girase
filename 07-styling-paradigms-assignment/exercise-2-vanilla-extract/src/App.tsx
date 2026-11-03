@@ -32,12 +32,12 @@ export function App() {
   return (
     <div className={`${activeThemeClass} ${appContainer}`}>
       <div className={contentWrapper}>
-        {/* Header with Theme Switcher (Demonstrates Token Propagation) */}
+        {/* Header with Theme Switcher */}
         <header className={showcaseHeader}>
           <div>
-            <h1 className={title}>Type-Safe Component Library</h1>
+            <h1 className={title}>Component Library</h1>
             <p className={subtitle}>
-              Built with Vanilla Extract zero-runtime CSS & TypeScript design tokens
+              Reusable UI system with design token theming
             </p>
           </div>
 
@@ -49,18 +49,16 @@ export function App() {
               title="Toggle Light / Dark Theme"
             >
               {isDarkMode ? <Sun size={14} /> : <Moon size={14} />}
-              <span>{isDarkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}</span>
+              <span>{isDarkMode ? 'Light Theme' : 'Dark Theme'}</span>
             </Button>
           </div>
         </header>
 
-        {/* ==================================================================== */}
-        {/* SECTION 1: BUTTON COMPONENT (Requirements 3, 4, 5, 11)               */}
-        {/* ==================================================================== */}
+        {/* SECTION 1: BUTTON COMPONENT */}
         <section className={section}>
-          <h2 className={sectionTitle}>1. Reusable Button Component</h2>
+          <h2 className={sectionTitle}>Button Component</h2>
           <p className={sectionDescription}>
-            Demonstrates base styles, 3 variants (primary, secondary, danger), 3 sizes (sm, md, lg), and interaction states (hover, focus, disabled).
+            Primary, secondary, and danger variants across small, medium, and large sizes with interactive states.
           </p>
 
           <div className={previewBox}>
@@ -72,11 +70,11 @@ export function App() {
                   checked={isDisabledState}
                   onChange={(e) => setIsDisabledState(e.target.checked)}
                 />
-                <strong>Toggle Disabled State</strong> (Verification Step 4)
+                <strong>Disable buttons</strong>
               </label>
 
               <span style={{ fontSize: 13, color: 'gray' }}>
-                Total Button Clicks: <strong>{clickCount}</strong>
+                Click Counter: <strong>{clickCount}</strong>
               </span>
             </div>
 
@@ -187,30 +185,28 @@ export function App() {
           </div>
         </section>
 
-        {/* ==================================================================== */}
-        {/* SECTION 2: BADGE COMPONENT (Requirement 7)                          */}
-        {/* ==================================================================== */}
+        {/* SECTION 2: BADGE COMPONENT */}
         <section className={section}>
-          <h2 className={sectionTitle}>2. Reusable Badge Component</h2>
+          <h2 className={sectionTitle}>Badge Component</h2>
           <p className={sectionDescription}>
-            Fulfills Requirement 7: Badge component with at least three variants (success, warning, error) consuming theme tokens.
+            Status indicators for operational health and system notifications.
           </p>
 
           <div className={previewBox}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
               <Badge variant="success">
                 <CheckCircle2 size={12} />
-                <span>Operational (Success)</span>
+                <span>Operational</span>
               </Badge>
 
               <Badge variant="warning">
                 <AlertTriangle size={12} />
-                <span>Degraded Performance (Warning)</span>
+                <span>Degraded Performance</span>
               </Badge>
 
               <Badge variant="error">
                 <XCircle size={12} />
-                <span>Critical Outage (Error)</span>
+                <span>Critical Outage</span>
               </Badge>
 
               <Badge variant="brand">
@@ -221,13 +217,11 @@ export function App() {
           </div>
         </section>
 
-        {/* ==================================================================== */}
-        {/* SECTION 3: CARD COMPONENT (Requirements 6, 10, 11)                   */}
-        {/* ==================================================================== */}
+        {/* SECTION 3: CARD COMPONENT */}
         <section className={section}>
-          <h2 className={sectionTitle}>3. Reusable Card Component</h2>
+          <h2 className={sectionTitle}>Card Component</h2>
           <p className={sectionDescription}>
-            Fulfills Requirement 6 & 10: Composable Card with base styling, consistent theme spacing, border radius, background, shadow, and responsive padding.
+            Flexible container with header, title, body, and footer slots.
           </p>
 
           <div className={gridLayout}>
@@ -299,13 +293,11 @@ export function App() {
           </div>
         </section>
 
-        {/* ==================================================================== */}
-        {/* SECTION 4: DESIGN TOKENS & VERIFICATION (Requirements 8, 13, 14, 15) */}
-        {/* ==================================================================== */}
+        {/* SECTION 4: DESIGN TOKENS */}
         <section className={section}>
-          <h2 className={sectionTitle}>4. Design Token Contract & Zero-Runtime Build Output</h2>
+          <h2 className={sectionTitle}>Design Tokens</h2>
           <p className={sectionDescription}>
-            Fulfills Requirements 8, 13, 14, 15: Demonstrating that Vanilla Extract extracts pure static CSS at build-time.
+            Active token values mapped from the centralized theme contract.
           </p>
 
           <div className={previewBox}>
@@ -314,7 +306,7 @@ export function App() {
                 <tr>
                   <th className={tableHeaderCell}>Token Category</th>
                   <th className={tableHeaderCell}>Contract Variable Reference</th>
-                  <th className={tableHeaderCell}>Active Theme Property</th>
+                  <th className={tableHeaderCell}>Active Theme Value</th>
                 </tr>
               </thead>
               <tbody>
@@ -337,11 +329,6 @@ export function App() {
                   <td className={tableCell}><strong>Radii Scale</strong></td>
                   <td className={tableCell}><code>vars.radii.[sm|md|lg|full]</code></td>
                   <td className={tableCell}>4px, 8px, 16px, 9999px</td>
-                </tr>
-                <tr>
-                  <td className={tableCell}><strong>Build Output Mode</strong></td>
-                  <td className={tableCell}><code>@vanilla-extract/vite-plugin</code></td>
-                  <td className={tableCell}><strong>Zero-Runtime Static .css</strong> (no JS style injection)</td>
                 </tr>
               </tbody>
             </table>

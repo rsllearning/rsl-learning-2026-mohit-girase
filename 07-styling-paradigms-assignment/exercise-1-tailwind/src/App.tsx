@@ -4,7 +4,7 @@ import type { Product } from './types/product';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { ProductGrid } from './components/ProductGrid';
-import { Palette, Check, X, ShieldAlert, Cpu, CheckCircle2 } from 'lucide-react';
+import { Palette, Check, X, Cpu, CheckCircle2 } from 'lucide-react';
 
 export function App() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -121,7 +121,7 @@ export function App() {
 
         {/* Main Content Area */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          {/* Design Token Live Verification Panel (Requirement 7 & Verification Step 7) */}
+          {/* Design Token Live Theme Panel */}
           <section className="mb-6 bg-surface/70 backdrop-blur-md border border-border-subtle hover:border-border-strong rounded-card p-4 shadow-sm transition-colors">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -130,10 +130,10 @@ export function App() {
                 </div>
                 <div>
                   <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-content-title">
-                    Theme Token Live Telemetry (Req 7 & Step 7)
+                    Theme Accent
                   </h2>
                   <p className="text-[11px] font-mono text-content-muted">
-                    Active brand token: <code className="text-brand font-bold">{activeBrandColor}</code> • Real-time utility propagation
+                    Primary palette: <code className="text-brand font-bold">{activeBrandColor}</code>
                   </p>
                 </div>
               </div>
@@ -178,7 +178,7 @@ export function App() {
                 </h2>
               </div>
               <p className="text-xs font-mono text-content-muted mt-0.5">
-                Responsive CSS Grid: 1-col (mobile) $\rightarrow$ 2-col (tablet/md) $\rightarrow$ 3-col (desktop/lg)
+                Active inventory units deployed across infrastructure
               </p>
             </div>
             <span className="text-xs font-mono px-2.5 py-1 rounded bg-surface-elevated text-content-body border border-border-subtle">
@@ -288,9 +288,8 @@ export function App() {
                   onChange={(e) => setNewProductStock(e.target.value)}
                   className="w-full px-3 py-2 text-xs font-mono bg-canvas border border-border-subtle rounded-action text-content-title focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
-                <span className="text-[10px] font-mono text-content-muted mt-1.5 flex items-center gap-1.5">
-                  <ShieldAlert className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  0 stock verifies the disabled button state styling.
+                <span className="text-[10px] font-mono text-content-muted mt-1.5 block">
+                  Set 0 to mark asset as backordered.
                 </span>
               </div>
 
