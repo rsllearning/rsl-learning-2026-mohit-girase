@@ -1,0 +1,17 @@
+Finding 1: location.hash - Untrusted URL Data
+The code extracts data from the URL fragment (location.hash), which is directly controlled by the user or an attacker and can be manipulated to supply malicious input.
+
+Finding 2: innerHTML - DOM-Based Cross-Site Scripting (DOM XSS)
+Assigning untrusted data directly to innerHTML instructs the browser to parse it as HTML markup, enabling an attacker to execute arbitrary JavaScript in the victim's browser session. It should use textContent instead.
+
+Finding 3: localStorage.getItem("config") - Untrusted Storage Input
+Data retrieved from browser localStorage is not guaranteed to be authentic or safe. It can be modified through previous script execution, browser extensions, or developer tools, and must be treated as untrusted.
+
+Finding 4: Object.assign() with JSON.parse() - Prototype Pollution
+Merging unvalidated JSON data directly into an object inheriting from Object.prototype allows dangerous properties such as __proto__ or constructor to pollute global prototypes and alter application logic or security checks.
+
+Finding 5: JSON.parse() - Unhandled Parsing Exception
+Calling JSON.parse on storage data without error handling causes an unhandled SyntaxError if the stored value is malformed or null, leading to a client-side crash.
+
+Finding 6: renderClient({ user }) - SSR Token and Sensitive Data Leakage
+Passing the complete raw user object directly across the server-to-client boundary exposes sensitive internal fields such as authentication tokens, secrets, and private attributes to client-side code instead of using a minimal Data Transfer Object (DTO).
