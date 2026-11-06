@@ -7,27 +7,37 @@ const username =
     window.initialUser?.name ||
     "Guest";
 
-app.innerHTML = `
-    <section class="profile-card">
-        <h2>Welcome, ${username}</h2>
+// DOM-Based Cross-Site Scripting Remediation:
+// Construct DOM elements using safe DOM APIs and textContent instead of innerHTML
+const profileCard = document.createElement("section");
+profileCard.className = "profile-card";
 
-        <p>
-            Email:
-            ${window.initialUser?.email || "Unknown"}
-        </p>
+const heading = document.createElement("h2");
+heading.textContent = `Welcome, ${username}`;
 
-        <p>
-            Role:
-            ${window.initialUser?.role || "User"}
-        </p>
-    </section>
-`;
+const emailParagraph = document.createElement("p");
+emailParagraph.textContent = `Email: ${window.initialUser?.email || "Unknown"}`;
+
+const roleParagraph = document.createElement("p");
+roleParagraph.textContent = `Role: ${window.initialUser?.role || "User"}`;
+
+profileCard.appendChild(heading);
+profileCard.appendChild(emailParagraph);
+profileCard.appendChild(roleParagraph);
+
+app.replaceChildren(profileCard);
+
+// Prototype Pollution Remediation:
+// Allowlist supported configuration properties and use Object.create(null)
+const allowedKeys = new Set(["theme", "language", "fontSize"]);
 
 function prepareSettings(userSettings) {
-    const settings = {};
+    const settings = Object.create(null);
 
     for (const key in userSettings) {
-        settings[key] = userSettings[key];
+        if (allowedKeys.has(key)) {
+            settings[key] = userSettings[key];
+        }
     }
 
     return settings;

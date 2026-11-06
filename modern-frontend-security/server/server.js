@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const crypto = require("crypto");
 
 const { user, defaultSettings } = require("./data");
 
@@ -9,10 +10,54 @@ const PORT = 3000;
 app.use(express.json());
 
 /*
+ * Content Security Policy & Clickjacking Protection Middleware
+ */
+app.use((req, res, next) => {
+    const nonce = crypto.randomBytes(16).toString("base64");
+    res.locals.nonce = nonce;
+
+    // Content Security Policy
+    res.setHeader(
+        "Content-Security-Policy",
+        `default-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self' 'unsafe-inline'; object-src 'none'; frame-ancestors 'none';`
+    );
+
+    // Clickjacking defense for legacy browsers
+    res.setHeader("X-Frame-Options", "DENY");
+
+    next();
+});
+
+/*
+ * Data Transfer Object (DTO) for SSR Data Minimization
+ */
+function createUserDTO(userData) {
+    return {
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+        role: userData.role
+    };
+}
+
+/*
+ * Allowed settings properties to prevent Prototype Pollution
+ */
+const allowedKeys = new Set(["theme", "language", "fontSize"]);
+
+/*
  * Home page
  */
 app.get("/", (req, res) => {
-    const initialUserData = JSON.stringify(user);
+    // SSR Token Leakage Prevention: Send safe DTO instead of full user object
+    const clientUser = createUserDTO(user);
+    const initialUserData = JSON.stringify(clientUser);
+
+    // Store sensitive authentication token in an HttpOnly cookie
+    res.setHeader(
+        "Set-Cookie",
+        `sessionToken=${user.sessionToken}; HttpOnly; SameSite=Lax; Path=/`
+    );
 
     res.send(`
         <!DOCTYPE html>
@@ -75,7 +120,7 @@ app.get("/", (req, res) => {
                 </section>
             </main>
 
-            <script>
+            <script nonce="${res.locals.nonce}">
                 window.initialUser = ${initialUserData};
             </script>
 
@@ -86,14 +131,14 @@ app.get("/", (req, res) => {
 });
 
 /*
- * Profile API
+ * Profile API - SSR Token Leakage Prevention: Exposes only safe DTO data
  */
 app.get("/api/profile", (req, res) => {
-    res.json(user);
+    res.json(createUserDTO(user));
 });
 
 /*
- * Settings API
+ * Settings API - Prototype Pollution Prevention: Allowlist properties & prototype-free object
  */
 app.get("/api/settings", (req, res) => {
     res.json(defaultSettings);
@@ -101,11 +146,12 @@ app.get("/api/settings", (req, res) => {
 
 app.post("/api/settings", (req, res) => {
     const incomingSettings = req.body;
-
-    const settings = {};
+    const settings = Object.create(null);
 
     for (const key in incomingSettings) {
-        settings[key] = incomingSettings[key];
+        if (allowedKeys.has(key)) {
+            settings[key] = incomingSettings[key];
+        }
     }
 
     res.json({
@@ -185,7 +231,7 @@ app.get("/account", (req, res) => {
                 <p id="status"></p>
             </div>
 
-            <script>
+            <script nonce="${res.locals.nonce}">
                 document
                     .getElementById("delete-account")
                     .addEventListener("click", () => {
