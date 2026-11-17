@@ -1,0 +1,13 @@
+{
+  "name": "10-intro-to-backend-rest-api",
+  "version": "1.0.0",
+  "description": "Online Bookstore RESTful API Assignment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
